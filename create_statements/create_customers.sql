@@ -7,7 +7,7 @@
 /*********************************************************************/
 CREATE TABLE bonus_customers
 (
-    CUSTOMER_ID NUMBER PRIMARY KEY,
+    CUSTOMER_ID NUMBER,
     name VARCHAR2(30),
     surname VARCHAR2(30),
     phone_number VARCHAR(20),
@@ -15,6 +15,10 @@ CREATE TABLE bonus_customers
     date_of_signup DATE,
     email VARCHAR2(50),
     card_no Number,
-    customer_no Number
+    customer_no Number,
+
+    PRIMARY KEY (CUSTOMER_ID)
 );
+
+DROP TABLE BONUS_CUSTOMERS;
 

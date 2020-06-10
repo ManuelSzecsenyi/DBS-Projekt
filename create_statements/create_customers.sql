@@ -16,6 +16,5 @@ CREATE TABLE bonus_customers
     email VARCHAR2(50),
     card_no Number,
     customer_no Number
-) ;
-
+);
 

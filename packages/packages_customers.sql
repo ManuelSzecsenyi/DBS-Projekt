@@ -14,8 +14,7 @@ CREATE OR REPLACE PACKAGE bonus_customers_pkg AS
                            v_phone_number IN VARCHAR,
                            d_date_of_birth_in DATE,
                            v_email_in VARCHAR,
-                           n_card_no_in Number,
-                           n_customer_no_in Number);
+                           n_card_no_in Number);
 
     function get_customer_turnover(n_CUSTOMER_ID_in NUMBER) RETURN NUMBER;
 
@@ -29,14 +28,13 @@ CREATE OR REPLACE PACKAGE BODY bonus_customers_pkg AS
                            v_phone_number IN VARCHAR,
                            d_date_of_birth_in DATE,
                            v_email_in VARCHAR,
-                           n_card_no_in Number,
-                           n_customer_no_in Number)
+                           n_card_no_in Number)
     AS
 
     BEGIN
 
         INSERT INTO BONUS_CUSTOMERS
-        (CUSTOMER_ID, NAME, SURNAME, PHONE_NUMBER, DATE_OF_BIRTH, DATE_OF_SIGNUP, EMAIL, CARD_NO, CUSTOMER_NO)
+        (CUSTOMER_ID, NAME, SURNAME, PHONE_NUMBER, DATE_OF_BIRTH, DATE_OF_SIGNUP, EMAIL, CARD_NO)
         VALUES
         (
          BONUS_CUSTOMERS_SEQ.nextval,
@@ -46,8 +44,7 @@ CREATE OR REPLACE PACKAGE BODY bonus_customers_pkg AS
          d_date_of_birth_in,
          CURRENT_DATE,
          v_email_in,
-         n_card_no_in,
-         n_customer_no_in
+         n_card_no_in
         );
 
     END;

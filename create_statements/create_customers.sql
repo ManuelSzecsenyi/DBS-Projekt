@@ -5,6 +5,7 @@
 /** Description: Create table bonus_customers
 /**
 /*********************************************************************/
+
 CREATE TABLE bonus_customers
 (
     CUSTOMER_ID NUMBER,
@@ -15,7 +16,6 @@ CREATE TABLE bonus_customers
     date_of_signup DATE,
     email VARCHAR2(50),
     card_no Number,
-    customer_no Number,
 
     PRIMARY KEY (CUSTOMER_ID)
 );

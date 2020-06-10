@@ -18,3 +18,4 @@ CREATE TABLE bonus_customers
     customer_no Number
 ) ;
 
+

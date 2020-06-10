@@ -21,7 +21,7 @@ CREATE TABLE bonus_customers
 ) ;
 
 
-CREATE OR REPLACE PACKAGE bonus_customers AS
+CREATE OR REPLACE PACKAGE bonus_customers_pkg AS
 
 
     procedure add_customer(
@@ -30,13 +30,13 @@ CREATE OR REPLACE PACKAGE bonus_customers AS
         v_
         );
 
-END bonus_customers;
+END bonus_customers_pkg;
 /
 
-CREATE OR REPLACE PACKAGE BODY bonus_customers AS
+CREATE OR REPLACE PACKAGE BODY bonus_customers_pkg AS
 
 
 
-END bonus_customers;
+END bonus_customers_pkg;
 /
 

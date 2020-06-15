@@ -206,7 +206,5 @@ insert into bonus_invoices (INVOICE_ID, customer_id, subtotal_net, purchase_time
 
 ----------------------------------------------------
 
--- bonus_positions
-
 
 COMMIT;

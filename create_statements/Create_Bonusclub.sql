@@ -48,9 +48,10 @@
    (	
      ARTICLE_ID NUMBER,
 	 designation VARCHAR2(30),
-	 unit Number,
+	 unit VARCHAR2(10),
 	 net_price Number,
-	 tax_rate_id NUMBER
+	 tax_rate_id NUMBER,
+     sold_units NUMBER
    );
    
 /*********************************************************************/
@@ -81,9 +82,9 @@
   CREATE TABLE bonus_invoices
    (	
      INVOICE_ID NUMBER,
-	 costumer_id NUMBER,
+	 customer_id NUMBER,
 	 subtotal_net NUMBER,
-     timestamp TIMESTAMP,
+     purchase_timestamp TIMESTAMP,
 	 branch_office_id NUMBER
    );
    
@@ -167,7 +168,7 @@
 
   ALTER TABLE bonus_invoices MODIFY (INVOICE_ID NOT NULL ENABLE);
   ALTER TABLE bonus_invoices MODIFY (subtotal_net NOT NULL ENABLE);
-  ALTER TABLE bonus_invoices MODIFY (testinger NOT NULL ENABLE);
+  ALTER TABLE bonus_invoices MODIFY (purchase_timestamp NOT NULL ENABLE);
   ALTER TABLE bonus_invoices ADD PRIMARY KEY (INVOICE_ID) ENABLE;
 
   --  Constraints for Table bonus_positions
@@ -193,7 +194,7 @@
 --  Ref Constraints for Table bonus_invoices
 --------------------------------------------------------
 
-  ALTER TABLE bonus_invoices ADD FOREIGN KEY (costumer_id)
+  ALTER TABLE bonus_invoices ADD FOREIGN KEY (customer_id)
 	  REFERENCES bonus_customers (CUSTOMER_ID) ENABLE;
 	  
 	 ALTER TABLE bonus_invoices ADD FOREIGN KEY (branch_office_id)
@@ -209,9 +210,6 @@
 	  REFERENCES bonus_articles (ARTICLE_ID) ENABLE;
 	
 
-	  
-
-	  
 
 	  
 	  

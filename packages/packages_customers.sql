@@ -20,6 +20,8 @@ CREATE OR REPLACE PACKAGE pa_bonus_customers AS
 
     function f_get_customers_rc RETURN SYS_REFCURSOR;
 
+    function f_get_customers_rc(n_customer_id_in NUMBER) RETURN SYS_REFCURSOR;
+
 END pa_bonus_customers;
 /
 
@@ -104,7 +106,7 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
     /*********************************************************************/
     /**
     /** Function: f_get_customers_n
-    /** Returns: SYS_RECURSOR
+    /** Returns: rc_cursor_out - All customers
     /** Developer: Manuel Szecsenyi
     /** Description: Returns a table of all customers.
     /**
@@ -117,6 +119,29 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
             OPEN rc_cursor_out
                 FOR SELECT *
                 FROM BONUS_CUSTOMERS;
+
+            RETURN rc_cursor_out;
+
+		end;
+
+    /*********************************************************************/
+    /**
+    /** Function: f_get_customers_n
+    /** In: n_CUSTOMER_ID_in – the id of the customer to search for
+    /** Returns: rc_cursor_out - Single customer data
+    /** Developer: Manuel Szecsenyi
+    /** Description: Returns a table of all customers.
+    /**
+    /*********************************************************************/
+    function f_get_customers_rc(n_customer_id_in NUMBER) RETURN SYS_REFCURSOR
+	as
+        rc_cursor_out SYS_REFCURSOR;
+		begin
+
+            OPEN rc_cursor_out
+                FOR SELECT *
+                FROM BONUS_CUSTOMERS
+                WHERE CUSTOMER_ID = n_customer_id_in;
 
             RETURN rc_cursor_out;
 

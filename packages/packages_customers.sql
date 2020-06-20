@@ -18,6 +18,8 @@ CREATE OR REPLACE PACKAGE pa_bonus_customers AS
 
     function f_get_customer_turnover_n(n_CUSTOMER_ID_in IN NUMBER) RETURN NUMBER;
 
+    function f_get_customers_rc RETURN SYS_REFCURSOR;
+
 END pa_bonus_customers;
 /
 
@@ -98,11 +100,27 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
 
 		end;
 
+
+    /*********************************************************************/
+    /**
+    /** Function: f_get_customers_n
+    /** Returns: SYS_RECURSOR
+    /** Developer: Manuel Szecsenyi
+    /** Description: Returns a table of all customers.
+    /**
+    /*********************************************************************/
+    function f_get_customers_rc RETURN SYS_REFCURSOR
+	as
+        rc_cursor_out SYS_REFCURSOR;
+		begin
+
+            OPEN rc_cursor_out
+                FOR SELECT *
+                FROM BONUS_CUSTOMERS;
+
+            RETURN rc_cursor_out;
+
+		end;
+
 END pa_bonus_customers;
 /
-
-
-BEGIN
-    DBMS_OUTPUT.put_line(pa_bonus_customers.f_get_customer_turnover_n(2));
-end;
-

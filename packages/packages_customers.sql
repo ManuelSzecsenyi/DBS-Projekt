@@ -16,6 +16,14 @@ CREATE OR REPLACE PACKAGE pa_bonus_customers AS
                            v_email_in VARCHAR,
                            n_card_no_in Number);
 
+    procedure sp_update_customer( n_customer_id_in IN NUMBER,
+                           v_name_in IN VARCHAR,
+                           v_surname_in IN VARCHAR,
+                           v_phone_number IN VARCHAR,
+                           d_date_of_birth_in DATE,
+                           v_email_in VARCHAR,
+                           n_card_no_in Number);
+
     function f_get_customer_turnover_n(n_CUSTOMER_ID_in IN NUMBER) RETURN NUMBER;
 
     function f_get_customers_rc RETURN SYS_REFCURSOR;
@@ -40,7 +48,6 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
     /** Developer: Manuel Szecsenyi
     /** Description: This procedures creates a new customer in the database.
     /**              Used to demonstrate PL/SQL with the GUI.
-     */
     /**
     /*********************************************************************/
     procedure sp_add_customer(v_name_in IN VARCHAR,
@@ -66,6 +73,44 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
          v_email_in,
          n_card_no_in
         );
+
+    END;
+
+    /*********************************************************************/
+    /**
+    /** Procedure sp_update_customer
+    /** In: n_customer_id_in – The customer ID.
+    /** In: v_name_in – The first name of the customer to update.
+    /** In: v_surname_in – The last name of the customer to update.
+    /** In: v_phone_number – The phone number of the customer to update.
+    /** In: d_date_of_birth_in – The date of birth of the customer to update. (YYYY-MM-DD)
+    /** In: v_email_in – The email address of the customer to update.
+    /** In: n_card_no_in – The card number of the customer to update.
+    /** Developer: Manuel Szecsenyi
+    /** Description: This procedures updates a customer in the database.
+    /**
+    /*********************************************************************/
+    procedure sp_update_customer( n_customer_id_in IN NUMBER,
+                           v_name_in IN VARCHAR,
+                           v_surname_in IN VARCHAR,
+                           v_phone_number IN VARCHAR,
+                           d_date_of_birth_in DATE,
+                           v_email_in VARCHAR,
+                           n_card_no_in Number)
+    AS
+
+    BEGIN
+
+        UPDATE BONUS_CUSTOMERS
+        SET NAME = v_name_in,
+            SURNAME = v_surname_in,
+            PHONE_NUMBER = v_phone_number,
+            DATE_OF_BIRTH = d_date_of_birth_in,
+            EMAIL = v_email_in,
+            CARD_NO = n_card_no_in
+        WHERE CUSTOMER_ID = n_customer_id_in;
+
+        COMMIT;
 
     END;
 

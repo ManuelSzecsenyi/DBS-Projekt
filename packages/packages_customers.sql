@@ -7,23 +7,39 @@
 /*
 /**********************************************************************/
 
-CREATE OR REPLACE PACKAGE bonus_customers_pkg AS
+CREATE OR REPLACE PACKAGE pa_bonus_customers AS
 
-    procedure add_customer(v_name_in IN VARCHAR,
+    procedure sp_add_customer(v_name_in IN VARCHAR,
                            v_surname_in IN VARCHAR,
                            v_phone_number IN VARCHAR,
                            d_date_of_birth_in DATE,
                            v_email_in VARCHAR,
                            n_card_no_in Number);
 
-    function get_customer_turnover(n_CUSTOMER_ID_in IN NUMBER) RETURN NUMBER;
+    function f_get_customer_turnover_n(n_CUSTOMER_ID_in IN NUMBER) RETURN NUMBER;
 
-END bonus_customers_pkg;
+END pa_bonus_customers;
 /
 
-CREATE OR REPLACE PACKAGE BODY bonus_customers_pkg AS
+CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
 
-    procedure add_customer(v_name_in IN VARCHAR,
+
+    /*********************************************************************/
+    /**
+    /** Procedure sp_add_customer
+    /** In: v_name_in – The first name of the customer to insert.
+    /** In: v_surname_in – The last name of the customer to insert.
+    /** In: v_phone_number – The phone number of the customer to insert.
+    /** In: d_date_of_birth_in – The date of birth of the customer to insert. (YYYY-MM-DD)
+    /** In: v_email_in – The email address of the customer to insert.
+    /** In: n_card_no_in – The card number of the customer to insert. Usually 1
+    /** Developer: Manuel Szecsenyi
+    /** Description: This procedures creates a new customer in the database.
+    /**              Used to demonstrate PL/SQL with the GUI.
+     */
+    /**
+    /*********************************************************************/
+    procedure sp_add_customer(v_name_in IN VARCHAR,
                            v_surname_in IN VARCHAR,
                            v_phone_number IN VARCHAR,
                            d_date_of_birth_in DATE,
@@ -49,17 +65,29 @@ CREATE OR REPLACE PACKAGE BODY bonus_customers_pkg AS
 
     END;
 
-    function get_customer_turnover(n_CUSTOMER_ID_in IN NUMBER) RETURN NUMBER
+    /*********************************************************************/
+    /**
+    /** Function: f_get_customer_turnover_n
+    /** In: n_CUSTOMER_ID_in – the id of the customer to search for
+    /** Returns: The turnover of the customer or -1 if no turnover was made
+    /** Developer: Manuel Szecsenyi
+    /** Description: Calculates the turnover of a customer and returns it.
+    /**
+    /*********************************************************************/
+    function f_get_customer_turnover_n(n_CUSTOMER_ID_in IN NUMBER) RETURN NUMBER
 	as
-        n_turnover_out NUMBER;
+        n_turnover_out NUMBER := 0;
 		begin
 
-		    SELECT SUM(SUBTOTAL_NET)
-		    INTO n_turnover_out
-            FROM BONUS_CUSTOMERS
-            JOIN BONUS_INVOICES BI on BONUS_CUSTOMERS.CUSTOMER_ID = BI.COSTUMER_ID
-            WHERE CUSTOMER_ID = n_CUSTOMER_ID_in
-		    GROUP BY CUSTOMER_ID;
+            SELECT Sum(SUBTOTAL_NET)
+            INTO n_turnover_out
+            FROM BONUS_INVOICES
+            WHERE CUSTOMER_ID = n_CUSTOMER_ID_in;
+
+            if n_turnover_out IS NULL then
+                DBMS_OUTPUT.PUT_LINE('No customer found or no invoices found');
+                n_turnover_out := -1;
+            end if;
 
 		    return n_turnover_out;
 
@@ -70,5 +98,11 @@ CREATE OR REPLACE PACKAGE BODY bonus_customers_pkg AS
 
 		end;
 
-END bonus_customers_pkg;
+END pa_bonus_customers;
 /
+
+
+BEGIN
+    DBMS_OUTPUT.put_line(pa_bonus_customers.f_get_customer_turnover_n(2));
+end;
+

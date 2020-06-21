@@ -7,7 +7,7 @@
 /** Description: Updates the subtotal of a
 /**
 /*********************************************************************/
-CREATE TRIGGER tr_ar_dlu_update_subtotal
+CREATE OR REPLACE TRIGGER tr_ar_dlu_update_subtotal
     AFTER DELETE OR INSERT OR UPDATE
     ON BONUS_POSITIONS FOR EACH ROW
 DECLARE

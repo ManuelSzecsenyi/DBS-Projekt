@@ -10,7 +10,7 @@
 
 CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
 
-    PROCEDURE add_invoice(
+    PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
         n_branch_office_id_in IN NUMBER
         );
@@ -25,19 +25,15 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
 
     /*********************************************************************/
     /**
-    /** Procedure sp_add_customer
-    /** In: v_name_in – The first name of the customer to insert.
-    /** In: v_surname_in – The last name of the customer to insert.
-    /** In: v_phone_number – The phone number of the customer to insert.
-    /** In: d_date_of_birth_in – The date of birth of the customer to insert. (YYYY-MM-DD)
-    /** In: v_email_in – The email address of the customer to insert.
-    /** In: n_card_no_in – The card number of the customer to insert. Usually 1
+    /** Procedure sp_add_invoice
+    /** In: n_customer_id_in – The customer (owner) of the invoice .
+    /** In: n_branch_office_id_in – The branch in which the purchase was made.
+    /** Out: n_invoice_id_out – The new invoice id
     /** Developer: Manuel Szecsenyi
-    /** Description: This procedures creates a new customer in the database.
-    /**              Used to demonstrate PL/SQL with the GUI.
+    /** Description: Saves an empty invoice to a customer and branch. 
     /**
     /*********************************************************************/
-    PROCEDURE add_invoice(
+    PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
         n_branch_office_id_in IN NUMBER
         )

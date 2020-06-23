@@ -26,7 +26,7 @@
 
 #### P: Update a customer
 
-```plsql
+```sql
 procedure sp_update_customer( n_customer_id_in IN NUMBER,
                        v_name_in IN VARCHAR,
                        v_surname_in IN VARCHAR,
@@ -53,7 +53,7 @@ Nur als Prozedur funktioniert nur wenn der Trigger programmiert worden ist.
 ### Invoices
 
 #### P: Add Invoice
-```plsql
+```sql
 PROCEDURE add_invoice(
         n_customer_id_in IN NUMBER,
         n_branch_office_id_in IN NUMBER

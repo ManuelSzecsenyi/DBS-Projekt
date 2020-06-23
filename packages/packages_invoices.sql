@@ -36,6 +36,9 @@ CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
 
     function f_get_invoices_rc RETURN SYS_REFCURSOR;
 
+    function f_get_invoice_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR;
+
+
 END pa_bonus_invoices;
 /
 
@@ -222,6 +225,51 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
 
 		end;
 
+    /*********************************************************************/
+    /**
+    /** Function: f_get_invoice_rc
+    /** In: n_invoice_id_in - Invoice ID
+    /** Returns: rc_cursor_out - Data of the invoice
+    /** Developer: Manuel Szecsenyi
+    /** Description: Returns a table of all customers.
+    /**
+    /*********************************************************************/
+    function f_get_invoice_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR
+	as
+        rc_cursor_out SYS_REFCURSOR;
+		begin
+
+            OPEN rc_cursor_out
+                FOR SELECT *
+                FROM BONUS_INVOICES
+                WHERE INVOICE_ID = n_invoice_id_in;
+
+            RETURN rc_cursor_out;
+
+		end;
+
+    /*********************************************************************/
+    /**
+    /** Function: f_get_invoice_articles_rc
+    /** In: n_invoice_id_in - Invoice ID
+    /** Returns: rc_cursor_out - Data of the invoice
+    /** Developer: Manuel Szecsenyi
+    /** Description: Returns a table of all customers.
+    /**
+    /*********************************************************************/
+    function f_get_invoice_articles_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR
+	as
+        rc_cursor_out SYS_REFCURSOR;
+		begin
+
+            OPEN rc_cursor_out
+                FOR SELECT *
+                FROM BONUS_INVOICES
+                WHERE INVOICE_ID = n_invoice_id_in;
+
+            RETURN rc_cursor_out;
+
+		end;
 
     
 END pa_bonus_invoices;

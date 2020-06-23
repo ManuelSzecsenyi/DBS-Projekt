@@ -4,4 +4,5 @@
 CREATE SEQUENCE bonus_customers_seq
 MINVALUE 201;
 
--- TODO Sequece for invoices
+CREATE SEQUENCE bonus_invoices_seq
+MINVALUE 101; -- we are seeding 100 tables before

@@ -34,6 +34,8 @@ CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
         n_article_id_in  IN NUMBER
         );
 
+    function f_get_invoices_rc RETURN SYS_REFCURSOR;
+
 END pa_bonus_invoices;
 /
 
@@ -198,6 +200,27 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
         CLOSE c_positions;
 
     END;
+
+    /*********************************************************************/
+    /**
+    /** Function: f_get_invoices_rc
+    /** Returns: rc_cursor_out - All available invoices
+    /** Developer: Manuel Szecsenyi
+    /** Description: Returns a table of all customers.
+    /**
+    /*********************************************************************/
+    function f_get_invoices_rc RETURN SYS_REFCURSOR
+	as
+        rc_cursor_out SYS_REFCURSOR;
+		begin
+
+            OPEN rc_cursor_out
+                FOR SELECT *
+                FROM BONUS_INVOICES;
+
+            RETURN rc_cursor_out;
+
+		end;
 
 
     

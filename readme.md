@@ -152,11 +152,57 @@ PROCEDURE sp_delete_article(
 
 Der angegegebene Artikel auf der Rechnung wird entfernt. Die Rechnungspositionen werden nachgerückt.  
 
-#### F: List all
+#### F: Get all invoices
 
-#### F: List invoice data
+```sql
+function f_get_invoices_rc RETURN SYS_REFCURSOR
+```
+
+##### Input
+
+`---` 
+
+##### Output
+
+`rc_cursor_out` - Alle vorhandenen Rechnungen
+
+##### Description
+
+Gibt alle Rechnungen zurück. Nützlich für die Ansicht in der GUI.
+
+#### F: Get invoice
+
+```sql
+
+```
+
+##### Input
+
+`n_invoice_id_in` - Die Rechnungs-ID der Rechnung.
+
+##### Output
+
+``rc_cursor_out` - Ein Pointer auf die Rechnung
+
+##### Description
+
+Gibt die Metadaten einer Rechnung zurück. Nützlich für die Ansicht in der GUI.  
 
 #### F: List articles (invoice_id IN)
 
+```sql
 
+```
+
+##### Input
+
+`n_invoice_id_in` - Die Rechnungs-ID der Rechnung.
+
+##### Output
+
+`rc_cursor_out` - Alle vorhandenen Positionen
+
+##### Description
+
+Gibt alle Positionen einer Rechnung zurück. Nützlich für die Ansicht in der GUI.  
 

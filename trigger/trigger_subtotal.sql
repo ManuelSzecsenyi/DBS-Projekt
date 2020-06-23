@@ -4,7 +4,7 @@
 /** Type: After row
 /** Type Extension: delete or insert or update
 /** Developer: Manuel Szecsenyi
-/** Description: Updates the subtotal of a
+/** Description: Updates the subtotal of a invoice
 /**
 /*********************************************************************/
 CREATE OR REPLACE TRIGGER tr_ar_dlu_update_subtotal

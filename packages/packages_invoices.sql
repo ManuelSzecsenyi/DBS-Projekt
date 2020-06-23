@@ -29,6 +29,10 @@ CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
         n_quantity_in  IN NUMBER
         );
 
+    PROCEDURE sp_delete_article(
+        n_invoice_id_in IN NUMBER,
+        n_article_id_in  IN NUMBER
+        );
 
 END pa_bonus_invoices;
 /
@@ -107,7 +111,7 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
     /** In: n_quantity_in – The article quantity.
     /** Developer: Manuel Szecsenyi
     /** Description: Adds a new article to an invoice. The price and position is
-    /**              calculated inside the prodedure. 
+    /**              calculated inside the prodedure.
     /**
     /*********************************************************************/
     PROCEDURE sp_add_article(
@@ -145,7 +149,57 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
     END;
 
 
+    /********************************************************************/
+    /***
+    /** Procedure sp_delete_article
+    /** In: n_invoice_id_in – The invoice id of the invoice to be updated.
+    /** In: n_article_id_in – The article id which should be deleted from the invoice.
+    /** Developer: Manuel Szecsenyi
+    /** Description: Removes an item of an invoice. Position of each each product
+    /**              ist recalculated inside the prodedure.
+    /**
+    /*********************************************************************/
+    PROCEDURE sp_delete_article(
+        n_invoice_id_in IN NUMBER,
+        n_article_id_in  IN NUMBER
+        )
+    AS
+        CURSOR c_positions
+        IS
+            SELECT *
+            FROM BONUS_POSITIONS
+            WHERE INVOICE_ID = n_invoice_id_in
+            ORDER BY POSITION;
+
+        l_position_row BONUS_POSITIONS%ROWTYPE;
+        n_counter NUMBER := 0;
+    BEGIN
+
+        -- Delete the old value
+        DELETE FROM BONUS_POSITIONS
+        WHERE INVOICE_ID = n_invoice_id_in
+          AND ARTICLE_ID = n_article_id_in;
+
+        -- Update the position of the other articles
+        open c_positions;
+        LOOP
+
+            FETCH c_positions INTO l_position_row;
+            EXIT WHEN c_positions%NOTFOUND;
+
+            n_counter := n_counter + 1;
+
+            UPDATE BONUS_POSITIONS
+            SET POSITION = n_counter
+            WHERE INVOICE_ID = l_position_row.INVOICE_ID
+              AND ARTICLE_ID = l_position_row.ARTICLE_ID;
+
+        end loop;
+        CLOSE c_positions;
+
+    END;
+
+
     
 END pa_bonus_invoices;
 /
-

@@ -105,8 +105,12 @@ Aktualisiert die wichtigsten Metainformationen einer Rechnung. Die Rechnungs-ID 
 
 #### P: Add Article
 
-```
-
+```sql
+PROCEDURE sp_add_article(
+        n_invoice_id_in IN NUMBER,
+        n_article_id_in  IN NUMBER,
+        n_quantity_in  IN NUMBER
+        )
 ```
 
 ##### Input
@@ -127,8 +131,11 @@ Fügt einen Artikel mit der angegebenen Stückzahl zu einer Rechnung hinzu. Es w
 
 #### P: Delete Article
 
-```
-
+```sql
+PROCEDURE sp_delete_article(
+        n_invoice_id_in IN NUMBER,
+        n_article_id_in  IN NUMBER
+        )
 ```
 
 ##### Input

@@ -38,6 +38,8 @@ CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
 
     function f_get_invoice_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR;
 
+    function f_get_invoice_articles_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR;
+
 
 END pa_bonus_invoices;
 /
@@ -252,7 +254,7 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
     /**
     /** Function: f_get_invoice_articles_rc
     /** In: n_invoice_id_in - Invoice ID
-    /** Returns: rc_cursor_out - Data of the invoice
+    /** Returns: rc_cursor_out - All positions of the invoice
     /** Developer: Manuel Szecsenyi
     /** Description: Returns a table of all customers.
     /**
@@ -264,7 +266,7 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
 
             OPEN rc_cursor_out
                 FOR SELECT *
-                FROM BONUS_INVOICES
+                FROM BONUS_POSITIONS
                 WHERE INVOICE_ID = n_invoice_id_in;
 
             RETURN rc_cursor_out;

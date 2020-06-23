@@ -173,7 +173,7 @@ Gibt alle Rechnungen zurück. Nützlich für die Ansicht in der GUI.
 #### F: Get invoice
 
 ```sql
-
+function f_get_invoice_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR
 ```
 
 ##### Input
@@ -191,7 +191,7 @@ Gibt die Metadaten einer Rechnung zurück. Nützlich für die Ansicht in der GUI
 #### F: List articles (invoice_id IN)
 
 ```sql
-
+function f_get_invoice_articles_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURSOR
 ```
 
 ##### Input

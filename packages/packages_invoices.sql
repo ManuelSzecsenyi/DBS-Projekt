@@ -12,9 +12,16 @@ CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
 
     PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
-        n_branch_office_id_in IN NUMBER
+        n_branch_office_id_in IN NUMBER,
+        n_invoice_id_out OUT NUMBER
         );
 
+    PROCEDURE sp_update_invoice(
+        n_invoice_id_in IN NUMBER,
+        n_customer_id_in IN NUMBER,
+        d_purchase_timestamp_in IN TIMESTAMP,
+        n_branch_office_id_in IN NUMBER
+    );
 
 
 END pa_bonus_invoices;
@@ -30,15 +37,16 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
     /** In: n_branch_office_id_in – The branch in which the purchase was made.
     /** Out: n_invoice_id_out – The new invoice id
     /** Developer: Manuel Szecsenyi
-    /** Description: Saves an empty invoice to a customer and branch. 
+    /** Description: Saves an empty invoice to a customer and branch.
     /**
     /*********************************************************************/
     PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
-        n_branch_office_id_in IN NUMBER
+        n_branch_office_id_in IN NUMBER,
+        n_invoice_id_out OUT NUMBER
         )
     AS
-        n_invoice_id_out NUMBER;
+
     BEGIN
         INSERT INTO BONUS_INVOICES
         (INVOICE_ID, CUSTOMER_ID, SUBTOTAL_NET, PURCHASE_TIMESTAMP, BRANCH_OFFICE_ID) VALUES
@@ -50,9 +58,37 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
              n_branch_office_id_in
         );
 
-        n_invoice_id_out := BONUS_INVOICES_SEQ.currval;
+        SELECT BONUS_INVOICES_SEQ.currval
+        INTO n_invoice_id_out
+        FROM DUAL;
 
-        return n_invoice_id_out;
+    END;
+
+
+    /*********************************************************************/
+    /**
+    /** Procedure sp_update_invoice
+    /** In: n_invoice_id_in – The invoice of the invoice to be updated.
+    /** In: n_customer_id_in – The customer id to which the invoice is saved.
+    /** In: d_purchase_timestamp_in – The timestamp of the purchase.
+    /** In: n_branch_office_id_in – The branch in which the purchase was made.
+    /** Developer: Manuel Szecsenyi
+    /** Description: Updates the invoice meta data. Invoice Id cannot be updated.
+    /**
+    /*********************************************************************/
+    PROCEDURE sp_update_invoice(
+        n_invoice_id_in IN NUMBER,
+        n_customer_id_in IN NUMBER,
+        d_purchase_timestamp_in IN TIMESTAMP,
+        n_branch_office_id_in IN NUMBER
+        )
+    AS
+    BEGIN
+        UPDATE BONUS_INVOICES SET
+        CUSTOMER_ID = n_customer_id_in,
+        PURCHASE_TIMESTAMP = d_purchase_timestamp_in,
+        BRANCH_OFFICE_ID = n_branch_office_id_in
+        WHERE INVOICE_ID = n_invoice_id_in;
 
     END;
     

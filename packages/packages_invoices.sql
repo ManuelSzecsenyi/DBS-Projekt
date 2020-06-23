@@ -23,6 +23,12 @@ CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
         n_branch_office_id_in IN NUMBER
     );
 
+    PROCEDURE sp_add_article(
+        n_invoice_id_in IN NUMBER,
+        n_article_id_in  IN NUMBER,
+        n_quantity_in  IN NUMBER
+        );
+
 
 END pa_bonus_invoices;
 /
@@ -91,6 +97,55 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
         WHERE INVOICE_ID = n_invoice_id_in;
 
     END;
+
+
+    /********************************************************************/
+    /***
+    /** Procedure sp_add_article
+    /** In: n_invoice_id_in – The invoice id of the invoice to be updated.
+    /** In: n_article_id_in – The article id which should be added to the invoice.
+    /** In: n_quantity_in – The article quantity.
+    /** Developer: Manuel Szecsenyi
+    /** Description: Adds a new article to an invoice. The price and position is
+    /**              calculated inside the prodedure. 
+    /**
+    /*********************************************************************/
+    PROCEDURE sp_add_article(
+        n_invoice_id_in IN NUMBER,
+        n_article_id_in  IN NUMBER,
+        n_quantity_in  IN NUMBER
+        )
+    AS
+        n_new_position NUMBER;
+        n_unit_price NUMBER;
+    BEGIN
+
+        -- Save current unit price
+        SELECT NET_PRICE
+        INTO n_unit_price
+        FROM BONUS_ARTICLES
+        WHERE ARTICLE_ID = n_article_id_in;
+
+        -- Retrieve next position on invoice
+        SELECT COUNT(*) + 1
+        INTO n_new_position
+        FROM BONUS_POSITIONS
+        WHERE INVOICE_ID = 1;
+
+        INSERT INTO BONUS_POSITIONS
+        (INVOICE_ID, ARTICLE_ID, UNIT_PRICE, QUANTITY, POSITION) VALUES
+        (
+            n_invoice_id_in,
+            n_article_id_in,
+            n_unit_price,
+            n_quantity_in,
+            n_new_position
+        );
+
+    END;
+
+
     
 END pa_bonus_invoices;
 /
+

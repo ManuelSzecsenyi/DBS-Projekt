@@ -206,3 +206,22 @@ function f_get_invoice_articles_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURS
 
 Gibt alle Positionen einer Rechnung zurück. Nützlich für die Ansicht in der GUI.  
 
+#### Statistics
+
+#### F: get bestseller
+
+```sql
+function f_get_most_bought_article_rc RETURN BONUS_ARTICLES%ROWTYPE;
+```
+
+##### Input
+
+`---` 
+
+##### Output
+
+`rt_article_row_out` - Ein Eintrag aus der Tabelle Artikel.
+
+##### Description
+
+Gibt den Artikel zurück mit dem größten `sold_units` Attribut. Zählt **nicht** die Häufigkeit eines Artikels in den Positionen.  

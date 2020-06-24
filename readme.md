@@ -208,7 +208,7 @@ Gibt alle Positionen einer Rechnung zurück. Nützlich für die Ansicht in der G
 
 #### Statistics
 
-#### F: get bestseller
+#### F: Meistverkauften Artikel 
 
 ```sql
 function f_get_most_bought_article_rc RETURN BONUS_ARTICLES%ROWTYPE;
@@ -224,4 +224,42 @@ function f_get_most_bought_article_rc RETURN BONUS_ARTICLES%ROWTYPE;
 
 ##### Description
 
-Gibt den Artikel zurück mit dem größten `sold_units` Attribut. Zählt **nicht** die Häufigkeit eines Artikels in den Positionen.  
+Gibt den Artikel zurück mit dem größten `sold_units` Attribut. Zählt **nicht** die Häufigkeit eines Artikels in den Positionen. Diese Statistik kann mit dem zurücksetzen der verkauften Einheiten eines Produktes verändert werden. 
+
+#### F: Kunde mit dem größten Umsatz
+
+```sql
+function f_get_customer_with_highest_turnover_rt RETURN BONUS_ARTICLES%ROWTYPE;
+```
+
+##### Input
+
+`---` 
+
+##### Output
+
+`rt_article_row_out` - Ein Eintrag aus der Tabelle Artikel.
+
+##### Description
+
+Gibt den Artikel zurück mit dem größten `sold_units` Attribut. Zählt **nicht** die Häufigkeit eines Artikels in den Positionen. Diese Statistik kann mit dem zurücksetzen der verkauften Einheiten eines Produktes verändert werden. 
+
+#### P: Verkaufszahlen zurücksetzen
+
+```sql
+PROCEDURE ps_reset_sold_units(
+        n_article_id_in IN NUMBER
+        )
+```
+
+##### Input
+
+`---` 
+
+##### Output
+
+`n_article_id_in` - Der Artikel welcher zurückgesetzt werden soll. 
+
+##### Description
+
+Setzt die `sold_units` des Artikels auf null (0). 

@@ -8,7 +8,14 @@
 /**********************************************************************/
 CREATE OR REPLACE PACKAGE pa_bonus_stats AS
 
-    function f_get_most_bought_article_rc RETURN BONUS_ARTICLES%ROWTYPE;
+    function f_get_most_bought_article_rt RETURN BONUS_ARTICLES%ROWTYPE;
+
+--     function f_get_customer_max_turnover_rt RETURN BONUS_CUSTOMERS%ROWTYPE;
+
+
+    PROCEDURE ps_reset_sold_units(
+        n_article_id_in IN NUMBER
+        );
 
 END pa_bonus_stats;
 /
@@ -17,13 +24,13 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_stats AS
 
     /*********************************************************************/
     /**
-    /** Function: f_get_most_bought_article_rc
+    /** Function: f_get_most_bought_article_rt
     /** Returns: rt_article_row_out - Single article rowtype
     /** Developer: Manuel Szecsenyi
     /** Description: Returns the article with the highest sold units.
     /**
     /*********************************************************************/
-    function f_get_most_bought_article_rc RETURN BONUS_ARTICLES%ROWTYPE
+    function f_get_most_bought_article_rt RETURN BONUS_ARTICLES%ROWTYPE
 	as
         rt_article_row_out BONUS_ARTICLES%ROWTYPE;
 		begin
@@ -33,9 +40,53 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_stats AS
             FROM (SELECT * FROM BONUS_ARTICLES ORDER BY SOLD_UNITS DESC)
             WHERE ROWNUM = 1;
 
+            return rt_article_row_out;
+
 		end;
+
+    /*********************************************************************/
+    /**
+    /** Function: f_get_customer_max_turnover_rt
+    /** Returns: rt_customer_row_out - Single customer rowtype
+    /** Developer: Manuel Szecsenyi
+    /** Description: Returns the customer with the highest turnover.
+    /**
+    /*********************************************************************/
+    /* TODO here after customer statistic view is fixed
+    function f_get_customer_max_turnover_rt RETURN BONUS_CUSTOMERS%ROWTYPE
+	as
+        rt_customer_row_out BONUS_CUSTOMERS%ROWTYPE;
+		begin
+
+            SELECT *
+            INTO rt_customer_row_out
+            FROM (SELECT * FROM CUSTOMER_STATISTIC ORDER BY NETTOUMSATZ DESC)
+            WHERE ROWNUM = 1;
+
+            return rt_customer_row_out;
+
+		end;
+
+
+     */
+
+    /*********************************************************************/
+    /**
+    /** Procedure sp_update_invoice
+    /** In: n_article_id_in – The article which will reset.
+    /** Developer: Manuel Szecsenyi
+    /** Description: Resets the sold units of a product to zero.
+    /**
+    /*********************************************************************/
+    PROCEDURE ps_reset_sold_units(
+        n_article_id_in IN NUMBER
+        )
+    AS
+    BEGIN
+        UPDATE BONUS_ARTICLES
+        SET SOLD_UNITS = 0
+        WHERE ARTICLE_ID = n_article_id_in;
+    END;
 
 END pa_bonus_stats;
 /
-
-

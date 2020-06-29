@@ -78,6 +78,22 @@ Diese Funktion nimmt keine Parameter entgegen.
 
 `SYS_REFCURSOR` - Alle abgespeicherten Filialen.  
 
+#### f_get_branch
+
+Gibt eine die Filiale zurück mit der angegebenen ID. 
+
+```sql
+function f_get_branch(n_branch_id_in IN NUMBER) RETURN SYS_REFCURSOR
+```
+
+##### Parameter
+
+`n_branch_id_in NUMBER` - Eine Filialid
+
+##### Rückgabewert
+
+`SYS_REFCURSOR` - Die Filiale mit der angegebenen ID.  
+
 ### Invoices
 
 #### P: Add Invoice

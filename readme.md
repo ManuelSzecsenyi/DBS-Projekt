@@ -94,9 +94,18 @@ function f_get_branch(n_branch_id_in IN NUMBER) RETURN SYS_REFCURSOR
 
 `SYS_REFCURSOR` - Die Filiale mit der angegebenen ID.  
 
-### Invoices
+### pa_bonus_invoices
 
-#### P: Add Invoice
+Package name: `pa_bonus_invoices`
+
+Entwickler: Manuel Szecsenyi
+
+Beschreibung: Hinzufügen und aktualisieren von Rechnungen ist mit diesem Package möglich. Es können auch Artikel hinzugefügt und gelöscht werden. Aber Rechnungsdaten können abgerufen werden.  
+
+#### sp_add_invoice
+
+Fügt eine neue Rechnung hinzu. Das System ermittelt selbständig die nächste Rechnungsnummer und speichert den aktuellen Zeitstempel ab. Die Rechnungen sind leer und haben Anfangs einen Nettobetrag von Null (0€). 
+
 ```sql
 PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
@@ -104,19 +113,15 @@ PROCEDURE sp_add_invoice(
         n_invoice_id_out OUT NUMBER
         )
 ```
-##### Input
+##### Parameter
 
-`n_customer_id_in` - Der Kunde zu dem die Rechnung gehört. 
+`n_customer_id_in IN NUMBER` - Der Kunde zu dem die Rechnung abgespeichert werden soll. 
 
-`n_branch_office_id_in` - Die Filial-ID in der der Einkauf getätigt wurde. 
+`n_branch_office_id_in` - Die Filial-ID in der der Einkauf getätigt wurde.
 
-##### Output
+##### Rückgabewert
 
-`n_invoice_id_out` - Die Rechnungs-ID der neu angelegten Rechnung. 
-
-##### Description
-
-Speichert eine neue leere Rechnung zu einem Kunden und einer Filiale ab. 
+`n_invoice_id_out` - Die Rechnungs-ID oder Rechnungsnummer der neu angelegten Rechnung. 
 
 #### P: Update Invoice
 
@@ -250,7 +255,7 @@ function f_get_invoice_articles_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURS
 
 Gibt alle Positionen einer Rechnung zurück. Nützlich für die Ansicht in der GUI.  
 
-#### Statistics
+### pa_bonus_stats
 
 #### F: Meistverkauften Artikel 
 
@@ -270,19 +275,21 @@ function f_get_most_bought_article_rt RETURN BONUS_ARTICLES%ROWTYPE;
 
 Gibt den Artikel zurück mit dem größten `sold_units` Attribut. Zählt **nicht** die Häufigkeit eines Artikels in den Positionen. Diese Statistik kann mit dem zurücksetzen der verkauften Einheiten eines Produktes verändert werden. 
 
-#### F: Kunde mit dem größten Umsatz
+#### f_get_customer_with_highest_turnover_n
+
+Gibt den Kunden mit dem größten Umsatz zurück. 
 
 ```sql
-function f_get_customer_with_highest_turnover_rt RETURN BONUS_ARTICLES%ROWTYPE;
+function f_get_customer_with_highest_turnover_rt RETURN NUMBER;
 ```
 
-##### Input
+##### Parameter
 
-`---` 
+Diese Funktion nimmt keine Parameter entgegen. 
 
-##### Output
+##### Rückgabewert
 
-`rt_article_row_out` - Ein Eintrag aus der Tabelle Artikel.
+`n_customer_id_out NUMBER` - Die Id des Kunden mit dem größten Umsatz.  
 
 ##### Description
 

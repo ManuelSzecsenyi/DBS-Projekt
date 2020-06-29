@@ -7,13 +7,11 @@
 /*
 /**********************************************************************/
 
-
 CREATE OR REPLACE PACKAGE pa_bonus_invoices AS
 
     PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
-        n_branch_office_id_in IN NUMBER,
-        n_invoice_id_out OUT NUMBER
+        n_branch_office_id_in IN NUMBER
         );
 
     PROCEDURE sp_update_invoice(
@@ -52,15 +50,13 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
     /** Procedure sp_add_invoice
     /** In: n_customer_id_in – The customer (owner) of the invoice .
     /** In: n_branch_office_id_in – The branch in which the purchase was made.
-    /** Out: n_invoice_id_out – The new invoice id
     /** Developer: Manuel Szecsenyi
     /** Description: Saves an empty invoice to a customer and branch.
     /**
     /*********************************************************************/
     PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
-        n_branch_office_id_in IN NUMBER,
-        n_invoice_id_out OUT NUMBER
+        n_branch_office_id_in IN NUMBER
         )
     AS
 
@@ -74,10 +70,6 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_invoices AS
              sysdate,
              n_branch_office_id_in
         );
-
-        SELECT BONUS_INVOICES_SEQ.currval
-        INTO n_invoice_id_out
-        FROM DUAL;
 
     END;
 

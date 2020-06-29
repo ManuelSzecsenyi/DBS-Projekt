@@ -110,7 +110,6 @@ Fügt eine neue Rechnung hinzu. Das System ermittelt selbständig die nächste R
 PROCEDURE sp_add_invoice(
         n_customer_id_in IN NUMBER,
         n_branch_office_id_in IN NUMBER,
-        n_invoice_id_out OUT NUMBER
         )
 ```
 ##### Parameter
@@ -121,7 +120,7 @@ PROCEDURE sp_add_invoice(
 
 ##### Rückgabewert
 
-`n_invoice_id_out` - Die Rechnungs-ID oder Rechnungsnummer der neu angelegten Rechnung. 
+Diese Prozedur gibt keinen Wert zurück. 
 
 #### P: Update Invoice
 

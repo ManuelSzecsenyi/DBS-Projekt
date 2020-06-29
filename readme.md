@@ -1,5 +1,9 @@
 
 
+# Projekt Bonusclub Documentation
+
+
+
 ## Views
 
 
@@ -49,6 +53,30 @@ Nur als Prozedur funktioniert nur wenn der Trigger programmiert worden ist.
 #### P: Update
 
 #### P: List
+
+### pa_bonus_branch
+
+Package name: `pa_bonus_branch`
+
+Entwickler: Manuel Szecsenyi
+
+Beschreibung: Ermöglicht das Aufrufen von Filialdaten. 
+
+#### f_get_branches
+
+Gibt alle Filialen zurück. 
+
+```sql
+function f_get_branches RETURN SYS_REFCURSOR
+```
+
+##### Parameter
+
+Diese Funktion nimmt keine Parameter entgegen. 
+
+##### Rückgabewert
+
+`SYS_REFCURSOR` - Alle abgespeicherten Filialen.  
 
 ### Invoices
 
@@ -211,7 +239,7 @@ Gibt alle Positionen einer Rechnung zurück. Nützlich für die Ansicht in der G
 #### F: Meistverkauften Artikel 
 
 ```sql
-function f_get_most_bought_article_rc RETURN BONUS_ARTICLES%ROWTYPE;
+function f_get_most_bought_article_rt RETURN BONUS_ARTICLES%ROWTYPE;
 ```
 
 ##### Input

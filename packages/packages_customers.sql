@@ -1,7 +1,7 @@
 /**********************************************************************/
 /*
 /* Filename: packages_customers.pkg
-/* Package: bonus_customers
+/* Package: pa_bonus_customers
 /* Developer: Manuel Szecsenyi
 /* Description: Responsible for adding a customer and getting their turnover
 /*

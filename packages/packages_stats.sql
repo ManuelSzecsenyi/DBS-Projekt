@@ -8,7 +8,7 @@
 /**********************************************************************/
 CREATE OR REPLACE PACKAGE pa_bonus_stats AS
 
-    function f_get_most_bought_article_rt RETURN BONUS_ARTICLES%ROWTYPE;
+    function f_get_most_bought_article_rc RETURN SYS_REFCURSOR;
 
 --     function f_get_customer_max_turnover_rt RETURN BONUS_CUSTOMERS%ROWTYPE;
 
@@ -24,23 +24,23 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_stats AS
 
     /*********************************************************************/
     /**
-    /** Function: f_get_most_bought_article_rt
+    /** Function: f_get_most_bought_article_rc
     /** Returns: rt_article_row_out - Single article rowtype
     /** Developer: Manuel Szecsenyi
     /** Description: Returns the article with the highest sold units.
     /**
     /*********************************************************************/
-    function f_get_most_bought_article_rt RETURN BONUS_ARTICLES%ROWTYPE
+    function f_get_most_bought_article_rc RETURN SYS_REFCURSOR
 	as
-        rt_article_row_out BONUS_ARTICLES%ROWTYPE;
+        rc_cursor_out SYS_REFCURSOR;
 		begin
 
-            SELECT *
-            INTO rt_article_row_out
-            FROM (SELECT * FROM BONUS_ARTICLES ORDER BY SOLD_UNITS DESC)
-            WHERE ROWNUM = 1;
+            OPEN rc_cursor_out
+                FOR SELECT *
+                FROM (SELECT * FROM BONUS_ARTICLES ORDER BY SOLD_UNITS DESC)
+                WHERE ROWNUM = 1;
 
-            return rt_article_row_out;
+            return rc_cursor_out;
 
 		end;
 

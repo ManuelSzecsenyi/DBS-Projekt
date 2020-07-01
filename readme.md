@@ -12,13 +12,15 @@ Es wurden keine zusätzlichen Coding Conventions erhoben. Es wird auf die der An
 
 ## Tabellen und Spalten
 
+Indexes sind automatisch auf den Primary Key und UNIQUE Attributes gesetzt. Hier werden deswegen nur die zusätzlichen Indexes auf die Foreign Keys erwähnt. 
+
 ### bonus_customers 
 
 Name: bonus_customers 
 
 Inhalt: Stamminformationen der Kunden 
 
-Indizes: CUSTOMER_ID, card_no 
+Indizes: -
 
 #### CUSTOMER_ID 
 
@@ -106,7 +108,7 @@ Name: bonus_tax_rates
 
 Inhalt: Steuersätze der Artikel 
 
-Indizes: ? 
+Indizes: -
 
 #### TAX_RATE_ID 
 
@@ -144,7 +146,7 @@ Name: bonus_articles
 
 Inhalt: Artikelstammdaten 
 
-Indizes: ? 
+Indizes: `ind_tax_rate_id`
 
 #### ARTICLE_ID 
 
@@ -212,9 +214,9 @@ Name: bonus_positions
 
 Inhalt: Position des Artikels auf der Rechnung 
 
-Indizes: ? 
+Indizes: `ind_invoice_id`, `ind_article_id`
 
-##### INVOICE_ID 
+#### INVOICE_ID 
 
 Name: INVOICE_ID 
 
@@ -224,7 +226,7 @@ Constraints: NOT NULL
 
 Inhalt: ID der Rechnung 
 
-##### ARTICLE_ID 
+#### ARTICLE_ID 
 
 Name: ARTICLE_ID 
 
@@ -234,7 +236,7 @@ Constraints: NOT NULL
 
 Inhalt: ID des Artikels 
 
-##### unit_price 
+#### unit_price 
 
 Name: unit_price 
 
@@ -244,7 +246,7 @@ Constraints: NOT NULL
 
 Inhalt: Stückpreis des Artikels 
 
-##### quantity 
+#### quantity 
 
 Name: quantity 
 
@@ -254,7 +256,7 @@ Constraints: NOT NULL
 
 Inhalt: Anzahl des Artikels auf der Rechnung 
 
-##### position 
+#### position 
 
 Name: position 
 
@@ -270,9 +272,9 @@ Name: bonus_invoices
 
 Inhalt: Rechnung 
 
-Indizes: ? 
+Indizes: `ind_office_id` 
 
-##### INVOICE_ID 
+#### INVOICE_ID 
 
 Name: INVOICE_ID 
 
@@ -282,7 +284,7 @@ Constraints: NOT NULL
 
 Inhalt: ID der Rechnung 
 
-##### customer_id 
+#### customer_id 
 
 Name: customer_id 
 
@@ -292,7 +294,7 @@ Constraints: NOT NULL
 
 Inhalt: ID des Kunden 
 
-##### subtotal_net 
+#### subtotal_net 
 
 Name: subtotal_net 
 
@@ -302,7 +304,7 @@ Constraints: NOT NULL
 
 Inhalt: Zwischensumme der Rechnung 
 
-##### purchase_timestamp 
+#### purchase_timestamp 
 
 Name: purchase_timestamp 
 
@@ -312,7 +314,7 @@ Constraints: NOT NULL
 
 Inhalt: Gespeicherte Zeit der abgeschlossenen Rechnung 
 
-##### branch_office_id 
+#### branch_office_id 
 
 Name: branch_office_id 
 
@@ -328,9 +330,9 @@ Name: bonus_branch_offices
 
 Inhalt: Filiale wo die Artikel verkauft werden 
 
-Indizes: ? 
+Indizes: `ind_postcode`
 
-##### BRANCH_OFFICE_ID 
+#### BRANCH_OFFICE_ID 
 
 Name: BRANCH_OFFICE_ID 
 
@@ -340,7 +342,7 @@ Constraints: NOT NULL
 
 Inhalt: ID der Filiale 
 
-##### name 
+#### name 
 
 Name: name 
 
@@ -350,7 +352,7 @@ Constraints: NOT NULL
 
 Inhalt: Name der Filiale 
 
-##### adress 
+#### adress 
 
 Name: adress 
 
@@ -965,6 +967,8 @@ Nach kurzem warten erscheint der Link unter dem die Webapp gestartet werden kann
 
 Die Verbindung zu Datenbank ist bereits eingestellt. 
 
+Bei Problemen bitte bei wi18b023@technikum-wien.at melden
+
 ## Struktur
 
 Wichtig für das Projekt waren folgende Files:
@@ -973,7 +977,7 @@ Wichtig für das Projekt waren folgende Files:
 - `app/Http/Controllers` - Hier sind alle Controllers gelistet mit den Funktionen der Webapp. Ein Controller gibt eine Ansicht (View) zurück. Diese finden sich unter
 - `resources/views/` -  Hier sind alle verfügbaren Views aufgelistet. 
 
-### Beispiel für die Interaktion: 
+### Beispiel für die Interaktion 
 
 Im folgenden Beispiel wird das Package `pa_bonus_customers` mit der Prozedur `sp_add_customer` näher vorgestellt. Die Daten für die Prozedur kommen mittels POST an den Controller der folgenden Code ausführt:
 
@@ -1000,3 +1004,4 @@ public function add(){
 ```
 
 Mit der `function request()` werden die Daten in ein Array übergeben. Wir sichern uns den Namen der Prozedur vorab in eine Variable um den Code übersichtlicher zu gestalten. Danach bauen wir unsere Bindings auf. Wir verwenden hier die gleichen Namen wie die Prozedur `IN` Variablen. Als Kartennummer haben wir uns zu Demonstrationszwecken für die 1 entschieden. Es wäre möglich unterschiedliche Kartennummer herauszugeben. Im nächsten Schritt wird der Prozedurname und die Bindings der Funktion `executeProcedure()` übergeben. Sie gibt einen Boolean Wert zurück. Wahr wenn die Prozedur erfolgreich durchgeführt wurde. Zu guter Letzt zeigt der Controller die View `add.customer` an und gibt ein Array als Parameter mit (notwendig). Der User bekommt also nach seinem Klick auf “Abschicken” die gleiche Seite angezeigt, allerdings mit einem leeren Formular und mit einer Erfolgsmeldung über das Abspeichern des Kunden. 
+

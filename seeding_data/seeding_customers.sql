@@ -198,3 +198,4 @@ insert into bonus_customers (CUSTOMER_ID, name, surname, phone_number, date_of_b
 insert into bonus_customers (CUSTOMER_ID, name, surname, phone_number, date_of_birth, date_of_signup, email, card_no) values (198, 'Andris', 'Guilloton', '+86 629 256 9287', '24.03.1993', '09.02.2020', 'aguilloton5h@domainmarket.com', 5);
 insert into bonus_customers (CUSTOMER_ID, name, surname, phone_number, date_of_birth, date_of_signup, email, card_no) values (199, 'Laurianne', 'Lemary', '+380 313 929 8830', '14.10.1986', '26.10.2019', 'llemary5i@engadget.com', 1);
 insert into bonus_customers (CUSTOMER_ID, name, surname, phone_number, date_of_birth, date_of_signup, email, card_no) values (200, 'Chloette', 'Soares', '+86 199 334 9017', '30.11.1997', '26.11.2019', 'csoares5j@clickbank.net', 1);
+COMMIT ;

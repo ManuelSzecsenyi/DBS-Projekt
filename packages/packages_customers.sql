@@ -163,7 +163,8 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_customers AS
 
             OPEN rc_cursor_out
                 FOR SELECT *
-                FROM BONUS_CUSTOMERS;
+                FROM BONUS_CUSTOMERS
+                ORDER BY CUSTOMER_ID;
 
             RETURN rc_cursor_out;
 

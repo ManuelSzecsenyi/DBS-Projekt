@@ -8,7 +8,8 @@
    3. Steuersätze
    4. Artikel
    5. Rechnung
-3. seeding_positions
+3. Trigger erstellen
+4. seeding_positions
 
 ## Drop order
 7..1

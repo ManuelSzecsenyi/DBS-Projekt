@@ -1,5 +1,3 @@
-
-
 # Projekt Bonusclub
 
 ## Projektbeschreibung
@@ -435,6 +433,102 @@ Bei dem Trigger wurden die **Tabellen**: `BONUS_ARTICLES` und `BONUS_POSITIONS` 
 
 ## Packages
 
+### pa_bonus_articles 
+
+Entwickler: Kurosh Mehdipour 
+
+Beschreibung: Ermöglicht Statistiken der Artikel einzusehen 
+
+#### sp_add_article  
+
+Fügt ein Artikel hinzu. 
+
+```plsql
+PROCEDURE sp_add_article(v_designation_in IN VARCHAR2(30), 
+             v_unit_in IN VARCHAR2(10), 
+             n_net_price_in IN NUMBER, 
+             n_tax_rate_id_in IN NUMBER, 
+             n_sold_units_in IN NUMBER);
+```
+
+**Parameter** 
+
+`v_designation_in IN VARCHAR2(30)` - Bezeichnung des Artikels 
+
+`v_unit_in IN VARCHAR2(10)` - Einheit des Produkts 
+
+`n_net_price_in IN NUMBER` – Nettopreis des Produktes 
+
+`n_tax_rate_id_in IN NUMBER` – Steuersatzid 
+
+`n_sold_units_in IN NUMBER` - Verkaufte Einheiten 
+
+**Rückgabewert** 
+
+Kein Rückgabewert. 
+
+#### f_get_article_id_rc
+
+Nimmt die ArtikelID entgegen und gibt den Artikel mit dieser ArtikelID aus. 
+
+```plsql
+function f_get_article_id_rc(n_article_id_in IN NUMBER) RETURN Sys_Refcursor; 
+```
+
+**Parameter**
+
+`n_article_id_in IN NUMBER` – ArtikelID 
+
+**Rückgabewert** 
+
+`Sys_Refcursor` – Der gewünschte Artikel wird zurückgegeben. 
+
+#### f_get_articles_rc 
+
+Gibt allen Artikeln aus.  
+
+```plsql
+function f_get_articles_rc return Sys_Refcursor; 
+```
+
+**Parameter** 
+
+Keine Parameter. 
+
+**Rückgabewert** 
+
+`Sys_Refcursor` – Alle Artikel werden zurückgegeben. 
+
+#### sp_update_article 
+
+Diese Prozedur ermöglicht es die Artikeldaten zu verändern. 
+
+```plsql
+PROCEDURE sp_update_article(n_article_id_in IN number, 
+              v_designation_in IN VARCHAR2(30), 
+              v_unit_in In VARCHAR2(10), 
+              n_net_price_in IN NUMBER, 
+              n_sol_units_in IN NUMBER); 
+```
+
+**Parameter** 
+
+`n_article_id_in IN NUMBER` – ID des Artikels 
+
+`v_designation_in IN VARCHAR2(30)` - Bezeichnung des Artikels 
+
+`v_unit_in In VARCHAR2(10)` - Einheit des Artikels 
+
+`n_net_price_in IN NUMBER` – Nettopreis des Artikels 
+
+`n_sol_units_in IN NUMBER` – Verkaufte Einheiten des Artikels 
+
+**Rückgabewert** 
+
+Kein Rückgabewert
+
+------
+
 ### pa_bonus_customers
 
 Package name: `pa_bonus_customer`
@@ -556,13 +650,7 @@ function f_get_customers_rc(n_customer_id_in NUMBER) RETURN SYS_REFCURSOR
 
 `SYS_REFCURSOR` - Kunde mit der angegebenen ID
 
-### Articles
-
-#### P: Add
-
-#### P: Update
-
-#### P: List
+---
 
 ### pa_bonus_branch
 
@@ -603,6 +691,8 @@ function f_get_branch(n_branch_id_in IN NUMBER) RETURN SYS_REFCURSOR
 ##### Rückgabewert
 
 `SYS_REFCURSOR` - Die Filiale mit der angegebenen ID.  
+
+---
 
 ### pa_bonus_invoices
 
@@ -752,6 +842,8 @@ function f_get_invoice_articles_rc(n_invoice_id_in in NUMBER) RETURN SYS_REFCURS
 
 `rc_cursor_out` - Alle vorhandenen Positionen
 
+---
+
 ### pa_bonus_stats
 
 Package name: `pa_bonus_stats`
@@ -811,3 +903,100 @@ Kein Rückgabewert.
 ##### Description
 
 Setzt die `sold_units` des Artikels auf null (0). 
+
+## Views
+
+### bonus_customer_statistic
+
+Die View `bonus_customer_statistic` zeigt die Anzahl der Einkäufe und den gesamten Umsatz des Kunden in Netto. 
+
+**Name**: `bonus_customer_statistic` 
+
+**Inhalt**: 
+
+- Kunden Vor und Nachname 
+
+- Kartennummer 
+- Anzahl der Rechnungen 
+- Anzahl Nettoumsatz 
+
+**Basisrelationen:** `bonus_customers , bonus_invoices` 
+
+### bonus_customer_statistics
+
+**Name** Artikelstatistik 
+
+**Inhalt**: 
+
+- ArtikelID 
+
+- Bezeichnung 
+- Verkaufte Mengen 
+- Gebrachten Nettoumsatz 
+- Meistverkauft in PLZ 
+
+**Basisrelationen**: `bonus_articles, bonus_positions, bonus_invoices, bonus_branch_office, bonus_postcodes` 
+
+Um die View zu erstellen wurden zuerst kleinere Selects geformt. Um die Anzahl der verkauften Einheiten einzusehen wird nur auf die Artikeltabelle geschaut, der Artikelumsatz wird in den Positionen nachgeschlagen da dort der beim Verkauf aktuell Preis hinterlegt ist. Zuletzt mithilfe der `STATS_MODE` Funktion und der Gruppierung nach Artikel ID gelesen in welchen Bezirk das Produkt am häufigsten verkauft wurde. Ein `Select` umschließt die Subselects und formt die endgültige View.
+
+## Indizes
+
+Auf welche Attribute Indizes gelegt wurde ist unter "Tabellen und Spalten" ersichtlich. 
+
+## GUI
+
+### Technik 
+
+Für die GUI wurde das PHP Framework Laravel gewählt. Die Funktionalität bietet Laravel, die Gestaltung wird vom Framework Bootstrap übernommen. 
+
+Damit auf die Oracle Datenbank zugegriffen werden kann musste die PHP-Erweiterung OCI8 installiert werden. Um das Framework voll nutzen zu können wurde ein Driver für Oracle verwenden der hier zu finden ist (https://github.com/yajra/laravel-oci8). Mit diesem war es nun möglich einfacher auf die Datenbank zuzugreifen. 
+
+Es wird nun mehr auf die Interaktion mit der Datenbank eingegangen und weniger darauf wie das Framework und der Seitenaufbau funktioniert. 
+
+## Starten der GUI
+
+Um die GUI zu verwenden muss PHP in der Kommandozeile aufrufbar und die Oracle OCI8 installiert sein. Zum Starten navigiert man in den Hauptfolder und gibt folgendes in der Kommandozeile ein:
+
+```bash
+php artisan serve
+```
+
+Nach kurzem warten erscheint der Link unter dem die Webapp gestartet werden kann.
+
+Die Verbindung zu Datenbank ist bereits eingestellt. 
+
+## Struktur
+
+Wichtig für das Projekt waren folgende Files:
+
+- `routes/web.php` - Hier sind alle verfügbaren Routen gelistet. Diese Verweisen beim Aufruf auf den jeweiligen Controller 
+- `app/Http/Controllers` - Hier sind alle Controllers gelistet mit den Funktionen der Webapp. Ein Controller gibt eine Ansicht (View) zurück. Diese finden sich unter
+- `resources/views/` -  Hier sind alle verfügbaren Views aufgelistet. 
+
+### Beispiel für die Interaktion: 
+
+Im folgenden Beispiel wird das Package `pa_bonus_customers` mit der Prozedur `sp_add_customer` näher vorgestellt. Die Daten für die Prozedur kommen mittels POST an den Controller der folgenden Code ausführt:
+
+```php
+public function add(){
+
+        $data = request();
+
+        $procedureName = 'pa_bonus_customers.sp_add_customer';
+
+        $bindings = [
+            'v_name_in' => $data["name"],
+            'v_surname_in' => $data["surname"],
+            'v_phone_number' => $data["phone_number"],
+            'd_date_of_birth_in' => $data["date_of_birth"],
+            'v_email_in' => $data["email"],
+            'n_card_no_in' => 1
+        ];
+
+        $result = DB::executeProcedure($procedureName, $bindings);
+
+        return view("customer.add", ['db_result' => $result]);
+    }
+```
+
+Mit der `function request()` werden die Daten in ein Array übergeben. Wir sichern uns den Namen der Prozedur vorab in eine Variable um den Code übersichtlicher zu gestalten. Danach bauen wir unsere Bindings auf. Wir verwenden hier die gleichen Namen wie die Prozedur `IN` Variablen. Als Kartennummer haben wir uns zu Demonstrationszwecken für die 1 entschieden. Es wäre möglich unterschiedliche Kartennummer herauszugeben. Im nächsten Schritt wird der Prozedurname und die Bindings der Funktion `executeProcedure()` übergeben. Sie gibt einen Boolean Wert zurück. Wahr wenn die Prozedur erfolgreich durchgeführt wurde. Zu guter Letzt zeigt der Controller die View `add.customer` an und gibt ein Array als Parameter mit (notwendig). Der User bekommt also nach seinem Klick auf “Abschicken” die gleiche Seite angezeigt, allerdings mit einem leeren Formular und mit einer Erfolgsmeldung über das Abspeichern des Kunden. 

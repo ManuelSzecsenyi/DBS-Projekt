@@ -46,29 +46,29 @@ CREATE OR REPLACE PACKAGE BODY pa_bonus_stats AS
 
     /*********************************************************************/
     /**
-    /** Function: f_get_customer_max_turnover_rt
+    /** Function: f_get_customer_with_highest_turnover_n
     /** Returns: rt_customer_row_out - Single customer rowtype
     /** Developer: Manuel Szecsenyi
     /** Description: Returns the customer with the highest turnover.
     /**
     /*********************************************************************/
-    /* TODO here after customer statistic view is fixed
-    function f_get_customer_max_turnover_rt RETURN BONUS_CUSTOMERS%ROWTYPE
-	as
-        rt_customer_row_out BONUS_CUSTOMERS%ROWTYPE;
-		begin
 
-            SELECT *
-            INTO rt_customer_row_out
-            FROM (SELECT * FROM CUSTOMER_STATISTIC ORDER BY NETTOUMSATZ DESC)
-            WHERE ROWNUM = 1;
+--      TODO von Kuri
+--     function f_get_customer_with_highest_turnover_n RETURN NUMBER
+-- 	as
+--         n_customer_id_out NUMBER;
+-- 		begin
+--
+--             SELECT CUSTOMER_ID
+--             INTO n_customer_id_out
+--             FROM (SELECT * FROM CUSTOMER_STATISTIC ORDER BY NETTOUMSATZ DESC)
+--             WHERE ROWNUM = 1;
+--
+--             return n_customer_id_out;
+--
+-- 		end;
 
-            return rt_customer_row_out;
 
-		end;
-
-
-     */
 
     /*********************************************************************/
     /**
